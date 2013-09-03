@@ -3,18 +3,18 @@ StaggeredGridView
 
 ## A sweeter version of StaggeredGridView
 
-This project is based on https://github.com/maurycyw/StaggeredGridView, which is a modification of Android' experimental StaggeredGridView
+This project is based on https://github.com/maurycyw/StaggeredGridView, which is a modification of Android's experimental StaggeredGridView
 
-You can find its code here: https://github.com/maurycyw/StaggeredGridView, http://grepcode.com/file/repository.grepcode.com/java/ext/com.google.android/android/4.3_r2.1/com/android/ex/widget/StaggeredGridView.java?av=f
+You can find its code here: https://github.com/maurycyw/StaggeredGridView, you can find the source here: http://grepcode.com/file/repository.grepcode.com/java/ext/com.google.android/android/4.3_r2.1/com/android/ex/widget/StaggeredGridView.java?av=f
 
 ## Features
 
-* Stable and high performance
+* Stability and high performance
 
-  This project fix many of the major bugs of https://github.com/maurycyw/StaggeredGridView. Such as when fling the view, the scroll slow down and speed up later.
+  This project fix many of the major bugs of https://github.com/maurycyw/StaggeredGridView. Such as when fling the view, the scroll sometimes slow down and speed up later.
 
   Notice that the image load also has a contribution to the perfomance. I use https://github.com/square/picasso, it gives the best performance I've ever seen.
-* Load more when touches the bottom
+* Load more when get to the bottom
 * Work with PullToRefresh
 
   A compatible to enable this widget to be pulled to refresh.
