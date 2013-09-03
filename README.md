@@ -3,7 +3,7 @@ StaggeredGridView
 
 ## A sweeter version of StaggeredGridView
 
-![](snapchot/snap.png)
+![](snapshot/snap.png)
 This project is based on [maurycyw/StaggeredGridView][1], which is a modification of Android's experimental StaggeredGridView: [com.android.ex.widget.StaggeredGridView][2]
 
 ## Features
