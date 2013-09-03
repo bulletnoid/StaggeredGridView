@@ -3,9 +3,7 @@ StaggeredGridView
 
 ## A sweeter version of StaggeredGridView
 
-This project is based on https://github.com/maurycyw/StaggeredGridView, which is a modification of Android's experimental StaggeredGridView
-
-You can find its code here: https://github.com/maurycyw/StaggeredGridView, you can find the source here: http://grepcode.com/file/repository.grepcode.com/java/ext/com.google.android/android/4.3_r2.1/com/android/ex/widget/StaggeredGridView.java?av=f
+This project is based on https://github.com/maurycyw/StaggeredGridView, which is a modification of Android's experimental StaggeredGridView. You can find the source here: http://grepcode.com/file/repository.grepcode.com/java/ext/com.google.android/android/4.3_r2.1/com/android/ex/widget/StaggeredGridView.java?av=f
 
 ## Features
 
