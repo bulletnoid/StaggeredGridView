@@ -31,7 +31,7 @@ You can find its code here: https://github.com/maurycyw/StaggeredGridView, you c
 ## Project structure
 
 In order to avoid some depandency problems, I add the libs into one project, but it is easy to use the libs.
-* StaggeredGridView lib
+* StaggeredGridView
 
   code: src/com.bulletoid.android.widget.StaggeredGridView
   
