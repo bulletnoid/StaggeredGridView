@@ -19,9 +19,9 @@ This project is based on [maurycyw/StaggeredGridView][1], which is a modificatio
 
 ## Restriction
 
-* You have to determine the dimension of each child view in the widget
+* You have to determine the dimension of each child view in the widget before the parent call the child.measure()
 
-  eg. When you display photo in the widget, and the photo is loaded from network, you have to let this widget know the size of each child, such as overwrite the onMeasure method of the child. Pinterset may also use this method.
+  eg. When you display photo in the widget, and the photo is loaded from network, you have to let this widget know the size of each child, such as overwrite the onMeasure method of the child. Pinterset use this method.
 * Load more is lazy
 
   When oad more, the widget only add new items to the old ones, the old ones is not reloaded.
