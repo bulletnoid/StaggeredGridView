@@ -3,7 +3,7 @@ StaggeredGridView
 
 ## A sweeter version of StaggeredGridView
 
-This project is based on https://github.com/maurycyw/StaggeredGridView, which is a modification of Android's experimental StaggeredGridView. You can find the source here: http://grepcode.com/file/repository.grepcode.com/java/ext/com.google.android/android/4.3_r2.1/com/android/ex/widget/StaggeredGridView.java?av=f
+This project is based on [maurycyw/StaggeredGridView][1], which is a modification of Android's experimental StaggeredGridView: [com.android.ex.widget.StaggeredGridView][2]
 
 ## Features
 
@@ -43,3 +43,6 @@ In order to avoid some depandency problems, I add the libs into one project, but
 ## Usage
 
 Please refer to the Demo of how to use the widget and use it with PullToRefresh.
+
+[1]: https://github.com/maurycyw/StaggeredGridView
+[2]: http://grepcode.com/file/repository.grepcode.com/java/ext/com.google.android/android/4.3_r2.1/com/android/ex/widget/StaggeredGridView.java?av=f
