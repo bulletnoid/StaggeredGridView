@@ -7,9 +7,9 @@ This project is based on [maurycyw/StaggeredGridView][1], which is a modificatio
 
 This widget has some sweet features that you may be interest.
 
-## Features
-
 ![](snapshot/snap.png)
+
+## Features
 
 * Stability and high performance
 
