@@ -5,6 +5,8 @@ StaggeredGridView
 
 This project is based on [maurycyw/StaggeredGridView][1], which is a modification of Android's experimental StaggeredGridView: [com.android.ex.widget.StaggeredGridView][2]
 
+This widget has some sweet features that you may be interest.
+
 ## Features
 
 ![](snapshot/snap.png)
