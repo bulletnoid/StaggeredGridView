@@ -9,9 +9,10 @@ This project is based on [maurycyw/StaggeredGridView][1], which is a modificatio
 
 * Stability and high performance
 
-  This project fix many of the major bugs of https://github.com/maurycyw/StaggeredGridView. Such as when fling the view, the scroll sometimes slow down and speed up later.
+  This project fix many of the major bugs of [maurycyw/StaggeredGridView][1]. Such as when fling the view, the scroll sometimes slow down and speed up later.
 
-  Notice that the image load also has a contribution to the perfomance. I use https://github.com/square/picasso, it gives the best performance I've ever seen.
+  Notice that the image load also has a contribution to the perfomance. I use [square/Picasso][3], it gives the best performance I've ever seen.
+* Header and Footer View and an Adapter to wrap all the child views, Just like android.widget.ListView
 * Load more when get to the bottom
 * Work with PullToRefresh
 
@@ -46,3 +47,4 @@ Please refer to the Demo of how to use the widget and use it with PullToRefresh.
 
 [1]: https://github.com/maurycyw/StaggeredGridView
 [2]: http://grepcode.com/file/repository.grepcode.com/java/ext/com.google.android/android/4.3_r2.1/com/android/ex/widget/StaggeredGridView.java?av=f
+[3]: https://github.com/square/picasso
