@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:layout_width="fill_parent"
+              android:layout_height="fill_parent">
+
+    <Button
+            android:id="@+id/btn_stgv"
+            android:layout_width="match_parent"
+            android:layout_height="80dp"
+            android:text="StaggeredGridView"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_gravity="center"/>
+
+    <Button
+            android:id="@+id/btn_stgv_ptr"
+            android:layout_width="match_parent"
+            android:layout_height="80dp"
+            android:text="StaggeredGridView with PullToRefresh"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_gravity="center"/>
+</LinearLayout>
+
