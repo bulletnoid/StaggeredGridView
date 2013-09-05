@@ -15,12 +15,16 @@ This widget has fixed some of the major bugs and has some new features that you 
 
   This widget fix some bugs of [maurycyw/StaggeredGridView][1]. Such as when fling the view, the scroll sometimes slow down and speed up later.
 
-  Notice that the image loading also has a contribution to the perfomance. I use [square/Picasso][3], it gives the best performance I've ever seen.
+  Notice that the image loading also has a contribution to the perfomance. I use [square/Picasso][3], it provides the best performance I've ever seen.
 * Header and Footer View and an Adapter to wrap all child views, Just like android.widget.ListView
+
+ Header and footer views can cross columns, but the widget currently only support no more than one header and no more than one footer.
 * Load more when get to the bottom
+
+  You may find the footer view useful here.
 * Work with PullToRefresh
 
-  A compatible part to enable this widget to be pulled to refresh.
+  A compatible part enable this widget to be pulled to refresh.
 
 ## Restriction
 
