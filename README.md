@@ -29,10 +29,10 @@ This widget has fixed some of the major bugs and has some new features that you 
   This is because the after the child is first time added to the parent widget, its size can not be changed later, otherwise it may cause gird misalign as you may have seen in [maurycyw/StaggeredGridView][1].
   
   eg. You want to display pictures in the widget, and the pictures are loaded from network. 
-  If you set your picture container to WRAP_CONTENT, the size of the pic container may change after the picture is loaded, and this can cause gird misalige. 
+  If you set your picture container to WRAP_CONTENT, the size of the pic container may change when the picture is loaded, and this can cause gird misalige. 
   Unfortunately, the current methodology has nothing to do to fix this. 
   Instead, you can let this widget know the size of each child before the picture is actually downloaded. 
-  You can do this by overwrite the onMeasure() method of the child.
+  You can do this by overwrite the onMeasure() method of the container.
 
 * Load more is lazy
 
