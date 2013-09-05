@@ -30,7 +30,7 @@ This widget has fixed some of the major bugs and has some new features that you 
 
 * You have to determine the dimension of each child view in the widget before the parent the child.measure()
 
-  This is because the after the child is first time added to the parent widget, its size can not be changed later, otherwise it may cause gird misalign as you may have seen in [maurycyw/StaggeredGridView][1].
+  This is because the after the child is first time added to the parent widget, its size should not be changed after that, otherwise it may cause gird misalign as you may have seen in [maurycyw/StaggeredGridView][1].
   
   eg. You want to display pictures in the widget, and the pictures are loaded from network. 
   If you set your picture container to WRAP_CONTENT, the size of the pic container may change when the picture is loaded, and this can cause gird misalige. 
