@@ -3,9 +3,9 @@ StaggeredGridView
 
 ## A sweeter version of StaggeredGridView
 
-This project is based on [maurycyw/StaggeredGridView][1], which is a modification of Android's experimental StaggeredGridView: [com.android.ex.widget.StaggeredGridView][2]
+This widget is based on [maurycyw/StaggeredGridView][1], which is a modification of Android's experimental StaggeredGridView: [com.android.ex.widget.StaggeredGridView][2]
 
-This widget has some sweet features that you may be interest.
+This widget has fixed some of the major bugs and has some new features that you may be interested.
 
 ![](snapshot/snap.png)
 
@@ -13,27 +13,39 @@ This widget has some sweet features that you may be interest.
 
 * Stability and high performance
 
-  This project fix many of the major bugs of [maurycyw/StaggeredGridView][1]. Such as when fling the view, the scroll sometimes slow down and speed up later.
+  This widget fix some bugs of [maurycyw/StaggeredGridView][1]. Such as when fling the view, the scroll sometimes slow down and speed up later.
 
-  Notice that the image load also has a contribution to the perfomance. I use [square/Picasso][3], it gives the best performance I've ever seen.
-* Header and Footer View and an Adapter to wrap all the child views, Just like android.widget.ListView
+  Notice that the image loading also has a contribution to the perfomance. I use [square/Picasso][3], it gives the best performance I've ever seen.
+* Header and Footer View and an Adapter to wrap all child views, Just like android.widget.ListView
 * Load more when get to the bottom
 * Work with PullToRefresh
 
-  A compatible to enable this widget to be pulled to refresh.
+  A compatible part to enable this widget to be pulled to refresh.
 
 ## Restriction
 
-* You have to determine the dimension of each child view in the widget before the parent call the child.measure()
+* You have to determine the dimension of each child view in the widget before the parent the child.measure()
 
-  eg. When you display photo in the widget, and the photo is loaded from network, you have to let this widget know the size of each child, such as overwrite the onMeasure method of the child. Pinterset use this method.
+  This is because the after the child is first time added to the parent widget, its size can not be changed later, otherwise it may cause gird misalign as you may have seen in [maurycyw/StaggeredGridView][1].
+  eg. When you display pictures in the widget, and the pictures are loaded from network. 
+  If you set your picture container to WRAP_CONTENT, the size of the pic container may change after the picture is loaded, and this change can cause gird misalige. 
+  Unfortunately, the current methodology has nothing to do to fix this. 
+  Instead, you ou must let this widget know the size of each child before the picture is actually downloaded. 
+  You can do this by overwrite the onMeasure() method of the child.
+
 * Load more is lazy
 
   When oad more, the widget only add new items to the old ones, the old ones is not reloaded.
 
+* Screen rotation
+
+  The widget may have problem holding the state when it is destroyed.
+  Besides you may want to change the column number when the screen orientation changed, you'd better to rebuild the whole content again.
+
 ## Project structure
 
-In order to avoid some depandency problems, I add the libs into one project, but it is easy to use the libs.
+Project contain StaggeredGridView library, StaggeredGridView demo, a modified PullToRefresh library to work with StaggeredGridView.
+In order to avoid some depandency problems, I add the libs into one project, but it is easy to retrieve the libs.
 * StaggeredGridView
 
   code: src/com.bulletoid.android.widget.StaggeredGridView
