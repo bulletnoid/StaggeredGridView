@@ -45,14 +45,14 @@ This widget has fixed some of the major bugs and has some new features that you 
 
 ## Project structure
 
-Project contain StaggeredGridView library, StaggeredGridView demo, a modified PullToRefresh library to work with StaggeredGridView.
+Project contains StaggeredGridView library, StaggeredGridView demo, modified PullToRefresh library to work with StaggeredGridView.
 In order to avoid some depandency problems, I add the libs into one project, but it is easy to retrieve the libs.
-* StaggeredGridView
+* StaggeredGridView lib
 
   code: src/com.bulletoid.android.widget.StaggeredGridView
   
   res: res/stgv_*.xml
-* PullToRefresh
+* PullToRefresh lib
 
   code: src/com.handmark.pulltorefresh.library
   
