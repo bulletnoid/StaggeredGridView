@@ -40,8 +40,8 @@ This widget has fixed some of the major bugs and has some new features that you 
 
 * Screen rotation
 
-  The widget may have problem holding the state when it is destroyed.
-  Besides you may want to change the column number when the screen orientation changed, you'd better to rebuild the whole content again.
+  The widget may have problem holding the state when it is destroyed and restored the them in a different screen orientation.
+  Besides, you may want to change the column number when the screen orientation changed, you'd better rebuild the whole content from start.
 
 ## Project structure
 
