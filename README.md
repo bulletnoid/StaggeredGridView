@@ -9,6 +9,11 @@ This widget has fixed some of the major bugs and has some new features that you 
 
 ![](snapshot/snap.png)
 
+## Suggertion
+
+It is very helpful for you to use this widget in your app and understand the restriction in it if you had konwledge of how to create Android custom views;
+http://developer.android.com/guide/topics/ui/custom-components.html has good information about that;
+
 ## Features
 
 * Stability and high performance
