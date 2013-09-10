@@ -9,9 +9,9 @@ This widget has fixed some of the major bugs and has some new features that you 
 
 ![](snapshot/snap.png)
 
-## Suggertion
+## Suggestion
 
-It is very helpful for you to use this widget in your app and understand the restriction in it if you had konwledge of how to create Android custom views;
+It is very helpful for you to use this widget in your app and understand the restriction in it if you had knowledge of how to create Android custom views;
 http://developer.android.com/guide/topics/ui/custom-components.html has good information about that;
 
 ## Features
@@ -20,8 +20,8 @@ http://developer.android.com/guide/topics/ui/custom-components.html has good inf
 
   This widget fix some bugs of [maurycyw/StaggeredGridView][1]. Such as when fling the view, the scroll sometimes slow down and speed up later.
 
-  Notice that the image loading also has a contribution to the perfomance. I use [square/Picasso][3], it provides the best performance I've ever seen.
-* Header and Footer View and an Adapter to wrap all child views, Just like android.widget.ListView
+  Notice that the image loading also has a contribution to the performance. I use [square/Picasso][3], it provides the best performance I've ever seen.
+* Header and Footer View and an Adapter to wrap all child views, just like android.widget.ListView
 
   Header and footer views can cross columns, but the widget currently only support no more than one header and no more than one footer.
 * Load more when get to the bottom
@@ -40,14 +40,14 @@ http://developer.android.com/guide/topics/ui/custom-components.html has good inf
   eg. You want to display pictures in the widget, and the pictures are loaded from network.
   The height of each grid is decided by the size of the picture in them.
   Say, if you set your picture container to WRAP_CONTENT, the size of the pic container may change when the picture is loaded, and then the size of the grid change.
-  This can cause gird misalige. 
+  This can cause gird misalign. 
   Unfortunately, the current methodology has nothing to do to fix this. 
   Instead, you can let this widget know the size of each child before the picture is actually downloaded. 
   You can do this by overwrite the onMeasure() method of the container.
 
 * Load more is lazy
 
-  When oad more, the widget only add new items to the old ones, the old ones is not reloaded.
+  When load more, the widget only add new items to the old ones, the old ones is not reloaded.
 
 * Screen rotation
 
@@ -57,7 +57,7 @@ http://developer.android.com/guide/topics/ui/custom-components.html has good inf
 ## Project structure
 
 Project contains StaggeredGridView library, StaggeredGridView demo, modified PullToRefresh library to work with StaggeredGridView.
-In order to avoid some depandency problems, I add the libs into one project, but it is easy to retrieve the libs.
+In order to avoid some dependency problems, I add the libs into one project, but it is easy to retrieve the libs.
 * StaggeredGridView lib
 
   code: src/com.bulletoid.android.widget.StaggeredGridView
