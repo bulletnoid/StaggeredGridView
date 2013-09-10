@@ -18,7 +18,7 @@ This widget has fixed some of the major bugs and has some new features that you 
   Notice that the image loading also has a contribution to the perfomance. I use [square/Picasso][3], it provides the best performance I've ever seen.
 * Header and Footer View and an Adapter to wrap all child views, Just like android.widget.ListView
 
- Header and footer views can cross columns, but the widget currently only support no more than one header and no more than one footer.
+  Header and footer views can cross columns, but the widget currently only support no more than one header and no more than one footer.
 * Load more when get to the bottom
 
   You may find the footer view useful here.
@@ -30,10 +30,12 @@ This widget has fixed some of the major bugs and has some new features that you 
 
 * You have to determine the dimension of each child view in the widget before the parent the child.measure()
 
-  This is because the after the child is first time added to the parent widget, its size should not be changed after that, otherwise it may cause gird misalign as you may have seen in [maurycyw/StaggeredGridView][1].
+  This is because the after the child is first time added to the parent widget, its size should not be changed, otherwise it may cause gird misalign as you may have seen in [maurycyw/StaggeredGridView][1].
   
-  eg. You want to display pictures in the widget, and the pictures are loaded from network. 
-  If you set your picture container to WRAP_CONTENT, the size of the pic container may change when the picture is loaded, and this can cause gird misalige. 
+  eg. You want to display pictures in the widget, and the pictures are loaded from network.
+  The height of each grid is decided by the size of the picture in them.
+  Say, if you set your picture container to WRAP_CONTENT, the size of the pic container may change when the picture is loaded, and then the size of the grid change.
+  This can cause gird misalige. 
   Unfortunately, the current methodology has nothing to do to fix this. 
   Instead, you can let this widget know the size of each child before the picture is actually downloaded. 
   You can do this by overwrite the onMeasure() method of the container.
