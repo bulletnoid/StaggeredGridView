@@ -1,7 +1,7 @@
 StaggeredGridView
 =================
 
-## A sweeter version of StaggeredGridView
+## A sweeter StaggeredGridView
 
 This widget is based on [maurycyw/StaggeredGridView][1], which is a modification of Android's experimental StaggeredGridView: [com.android.ex.widget.StaggeredGridView][2]
 
