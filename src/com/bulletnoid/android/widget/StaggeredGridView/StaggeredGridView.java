@@ -979,6 +979,11 @@ public class StaggeredGridView extends ViewGroup {
             }
         }
 
+        // Clear saved state if column count changed
+        if (mRestoreOffsets != null && mColCount != mRestoreOffsets.length) {
+            mRestoreOffsets = null;
+        }
+
         final int colCount = mColCount;
 
         // setup arraylist for mappings
@@ -1776,14 +1781,8 @@ public class StaggeredGridView extends ViewGroup {
      */
     private void resetStateForGridTop() {
         // Reset mItemTops and mItemBottoms
-        final int colCount = mColCount;
-        if (mItemTops == null || mItemTops.length != colCount) {
-            mItemTops = new int[colCount];
-            mItemBottoms = new int[colCount];
-        }
-        final int top = getPaddingTop();
-        Arrays.fill(mItemTops, top);
-        Arrays.fill(mItemBottoms, top);
+        mItemTops = null;
+        mItemBottoms = null;
 
         // Reset the first visible position in the grid to be item 0
         mFirstPosition = 0;
