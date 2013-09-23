@@ -654,7 +654,6 @@ public class StaggeredGridView extends ViewGroup {
             final int overhang;
             final boolean up;
             mPopulating = true;
-
             if (deltaY > 0) {
                 overhang = fillUp(mFirstPosition - 1, allowOverhang) + mItemMargin;
                 up = true;
@@ -671,19 +670,16 @@ public class StaggeredGridView extends ViewGroup {
             if (movedBy == 0) {
                 if (up) {
                     mGetToTop = true;
-                    lazyload = false;
                 } else {
                     mGetToTop = false;
-                    lazyload = true;
-
-                    if (!loadlock) {
-                        mLoadListener.onLoadmore();
-                        loadlock = true;
-                    }
                 }
             } else {
                 mGetToTop = false;
-                lazyload = true;
+            }
+
+            if (!loadlock && deltaY < 0 && mFirstPosition > (mAdapter.getCount() * 0.75)) {
+                mLoadListener.onLoadmore();
+                loadlock = true;
             }
 
             offsetChildren(up ? movedBy : -movedBy);
