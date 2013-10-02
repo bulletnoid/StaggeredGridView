@@ -227,6 +227,9 @@ public class StaggeredGridView extends ViewGroup {
 
     OnLoadmoreListener mLoadListener;
 
+    boolean mCanJumpToTop;
+    JumpToTopListener mJumpToTopListener;
+
     public static boolean loadlock = false;
     public static boolean lazyload = false;
     public static final int MAX_CHILD_COUNT = 12;
@@ -302,6 +305,10 @@ public class StaggeredGridView extends ViewGroup {
         public void onLoadmore();
     }
 
+    public interface JumpToTopListener {
+        public void onJumpToTopStateChanged(boolean canJump);
+    }
+
     private final SparseArrayCompat<LayoutRecord> mLayoutRecords =
             new SparseArrayCompat<LayoutRecord>();
 
@@ -344,6 +351,10 @@ public class StaggeredGridView extends ViewGroup {
 
     public void setOnLoadmoreListener(OnLoadmoreListener listener) {
         this.mLoadListener = listener;
+    }
+
+    public void setJumpToTopListener(JumpToTopListener jumpToTopListener) {
+        this.mJumpToTopListener = jumpToTopListener;
     }
 
     /**
@@ -677,9 +688,15 @@ public class StaggeredGridView extends ViewGroup {
                 mGetToTop = false;
             }
 
-            if (!loadlock && deltaY < 0 && mFirstPosition > (mAdapter.getCount() * 0.75)) {
+            if (mLoadListener != null && !loadlock && deltaY < 0 && mFirstPosition > (mAdapter.getCount() * 0.75)) {
                 mLoadListener.onLoadmore();
                 loadlock = true;
+            }
+
+            boolean canJump = deltaY > 0 && (mFirstPosition / Math.max(1, mColCount)) > 2;
+            if (mJumpToTopListener != null && canJump != mCanJumpToTop) {
+                mJumpToTopListener.onJumpToTopStateChanged(canJump);
+                mCanJumpToTop = canJump;
             }
 
             offsetChildren(up ? movedBy : -movedBy);
