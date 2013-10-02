@@ -33,7 +33,7 @@ android {
 
     sourceSets {
         main {
-            manifest.srcFile 'AndroidManifest.xml'
+            manifest.srcFile 'src/com/bulletnoid/android/widget/StaggeredGridView/AndroidManifest.xml'
             java.srcDirs = ['src']
             res.srcDirs = ['res']
         }

@@ -947,7 +947,7 @@ public class StaggeredGridView extends ViewGroup {
         setMeasuredDimension(widthSize, heightSize);
 
         if (mColCountSetting == COLUMN_COUNT_AUTO) {
-            final int colCount = widthSize / mMinColWidth;
+            final int colCount = Math.max(1, widthSize / mMinColWidth);
             if (colCount != mColCount) {
                 mColCount = colCount;
             }
@@ -2129,8 +2129,10 @@ public class StaggeredGridView extends ViewGroup {
                 // reset list if position does not exist or id for position has changed
                 if (mFirstPosition > mItemCount - 1 || mAdapter.getItemId(mFirstPosition) != mFirstAdapterId) {
                     mFirstPosition = 0;
-                    Arrays.fill(mItemTops, 0);
-                    Arrays.fill(mItemBottoms, 0);
+                    if (mItemTops != null)
+                        Arrays.fill(mItemTops, 0);
+                    if (mItemBottoms != null)
+                        Arrays.fill(mItemBottoms, 0);
 
                     if (mRestoreOffsets != null)
                         Arrays.fill(mRestoreOffsets, 0);
