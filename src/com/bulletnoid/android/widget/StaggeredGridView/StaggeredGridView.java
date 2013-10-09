@@ -688,7 +688,7 @@ public class StaggeredGridView extends ViewGroup {
                 mGetToTop = false;
             }
 
-            if (mLoadListener != null && !loadlock && deltaY < 0 && mFirstPosition > (mAdapter.getCount() * 0.75)) {
+            if (mLoadListener != null && !loadlock && deltaY < 0 && (mFirstPosition + getChildCount()) > (mAdapter.getCount() * 0.75)) {
                 mLoadListener.onLoadmore();
                 loadlock = true;
             }
