@@ -1,0 +1,41 @@
+buildscript {
+    repositories {
+        maven { url 'http://repo1.maven.org/maven2' }
+    }
+    dependencies {
+        classpath 'com.android.tools.build:gradle:0.5.3'
+    }
+}
+apply plugin: 'android-library'
+
+repositories {
+    maven {
+        url 'https://github.com/Goddchen/mvn-repo/raw/master/'
+    }
+    maven { url 'http://repo1.maven.org/maven2' }
+}
+
+dependencies {
+    compile (
+            'com.android.support:support-v4:13.0.0',
+            files('libs/picasso-2.0.0.jar')
+    )
+}
+
+android {
+    compileSdkVersion 17
+    buildToolsVersion "17.0.0"
+
+    defaultConfig {
+        minSdkVersion 7
+        targetSdkVersion 16
+    }
+
+    sourceSets {
+        main {
+            manifest.srcFile 'src/com/bulletnoid/android/widget/StaggeredGridView/AndroidManifest.xml'
+            java.srcDirs = ['src']
+            res.srcDirs = ['res']
+        }
+    }
+}

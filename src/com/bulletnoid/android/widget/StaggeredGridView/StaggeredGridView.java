@@ -227,6 +227,9 @@ public class StaggeredGridView extends ViewGroup {
 
     OnLoadmoreListener mLoadListener;
 
+    boolean mCanJumpToTop;
+    JumpToTopListener mJumpToTopListener;
+
     public static boolean loadlock = false;
     public static boolean lazyload = false;
     public static final int MAX_CHILD_COUNT = 12;
@@ -302,6 +305,10 @@ public class StaggeredGridView extends ViewGroup {
         public void onLoadmore();
     }
 
+    public interface JumpToTopListener {
+        public void onJumpToTopStateChanged(boolean canJump);
+    }
+
     private final SparseArrayCompat<LayoutRecord> mLayoutRecords =
             new SparseArrayCompat<LayoutRecord>();
 
@@ -344,6 +351,10 @@ public class StaggeredGridView extends ViewGroup {
 
     public void setOnLoadmoreListener(OnLoadmoreListener listener) {
         this.mLoadListener = listener;
+    }
+
+    public void setJumpToTopListener(JumpToTopListener jumpToTopListener) {
+        this.mJumpToTopListener = jumpToTopListener;
     }
 
     /**
@@ -654,7 +665,6 @@ public class StaggeredGridView extends ViewGroup {
             final int overhang;
             final boolean up;
             mPopulating = true;
-
             if (deltaY > 0) {
                 overhang = fillUp(mFirstPosition - 1, allowOverhang) + mItemMargin;
                 up = true;
@@ -671,19 +681,22 @@ public class StaggeredGridView extends ViewGroup {
             if (movedBy == 0) {
                 if (up) {
                     mGetToTop = true;
-                    lazyload = false;
                 } else {
                     mGetToTop = false;
-                    lazyload = true;
-
-                    if (!loadlock) {
-                        mLoadListener.onLoadmore();
-                        loadlock = true;
-                    }
                 }
             } else {
                 mGetToTop = false;
-                lazyload = true;
+            }
+
+            if (mLoadListener != null && !loadlock && deltaY < 0 && (mFirstPosition + getChildCount()) > (mAdapter.getCount() * 0.75)) {
+                mLoadListener.onLoadmore();
+                loadlock = true;
+            }
+
+            boolean canJump = deltaY > 0 && (mFirstPosition / Math.max(1, mColCount)) > 2;
+            if (mJumpToTopListener != null && canJump != mCanJumpToTop) {
+                mJumpToTopListener.onJumpToTopStateChanged(canJump);
+                mCanJumpToTop = canJump;
             }
 
             offsetChildren(up ? movedBy : -movedBy);
@@ -951,7 +964,7 @@ public class StaggeredGridView extends ViewGroup {
         setMeasuredDimension(widthSize, heightSize);
 
         if (mColCountSetting == COLUMN_COUNT_AUTO) {
-            final int colCount = widthSize / mMinColWidth;
+            final int colCount = Math.max(1, widthSize / mMinColWidth);
             if (colCount != mColCount) {
                 mColCount = colCount;
             }
@@ -981,6 +994,11 @@ public class StaggeredGridView extends ViewGroup {
             if (colCount != mColCount) {
                 mColCount = colCount;
             }
+        }
+
+        // Clear saved state if column count changed
+        if (mRestoreOffsets != null && mColCount != mRestoreOffsets.length) {
+            mRestoreOffsets = null;
         }
 
         final int colCount = mColCount;
@@ -1780,14 +1798,8 @@ public class StaggeredGridView extends ViewGroup {
      */
     private void resetStateForGridTop() {
         // Reset mItemTops and mItemBottoms
-        final int colCount = mColCount;
-        if (mItemTops == null || mItemTops.length != colCount) {
-            mItemTops = new int[colCount];
-            mItemBottoms = new int[colCount];
-        }
-        final int top = getPaddingTop();
-        Arrays.fill(mItemTops, top);
-        Arrays.fill(mItemBottoms, top);
+        mItemTops = null;
+        mItemBottoms = null;
 
         // Reset the first visible position in the grid to be item 0
         mFirstPosition = 0;
@@ -2134,8 +2146,10 @@ public class StaggeredGridView extends ViewGroup {
                 // reset list if position does not exist or id for position has changed
                 if (mFirstPosition > mItemCount - 1 || mAdapter.getItemId(mFirstPosition) != mFirstAdapterId) {
                     mFirstPosition = 0;
-                    Arrays.fill(mItemTops, 0);
-                    Arrays.fill(mItemBottoms, 0);
+                    if (mItemTops != null)
+                        Arrays.fill(mItemTops, 0);
+                    if (mItemBottoms != null)
+                        Arrays.fill(mItemBottoms, 0);
 
                     if (mRestoreOffsets != null)
                         Arrays.fill(mRestoreOffsets, 0);
