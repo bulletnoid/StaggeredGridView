@@ -2162,13 +2162,13 @@ public class StaggeredGridView extends ViewGroup {
             this.values = values;
         }
 
-        private ColMap(Parcel in) {
-            in.readIntArray(tempMap);
-            values = new ArrayList<Integer>();
-            for (int index = 0; index < tempMap.length; index++) {
-                values.add(tempMap[index]);
-            }
-        }
+		private ColMap(Parcel in) {
+			tempMap = in.createIntArray();
+			values = new ArrayList<Integer>();
+			for (int index = 0; index < tempMap.length; index++) {
+				values.add(tempMap[index]);
+			}
+		}
 
         @Override
         public void writeToParcel(Parcel out, int flags) {
@@ -2209,14 +2209,13 @@ public class StaggeredGridView extends ViewGroup {
             super(superState);
         }
 
-        private SavedState(Parcel in) {
-            super(in);
-            firstId = in.readLong();
-            position = in.readInt();
-            in.readIntArray(topOffsets);
-            in.readTypedList(mapping, ColMap.CREATOR);
-
-        }
+		private SavedState(Parcel in) {
+			super(in);
+			firstId = in.readLong();
+			position = in.readInt();
+			topOffsets = in.createIntArray();
+			mapping = in.createTypedArrayList(ColMap.CREATOR);
+		}
 
         @Override
         public void writeToParcel(Parcel out, int flags) {
