@@ -1722,8 +1722,10 @@ public class StaggeredGridView extends ViewGroup {
         if (view.getParent() != this) {
             if (lp == null) {
                 lp = generateDefaultLayoutParams();
+                view.setLayoutParams(lp); // set new params
             } else if (!checkLayoutParams(lp)) {
                 lp = generateLayoutParams(lp);
+                view.setLayoutParams(lp); // set new params
             }
         }
 
