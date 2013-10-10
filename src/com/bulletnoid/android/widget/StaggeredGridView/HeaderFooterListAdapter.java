@@ -30,10 +30,10 @@ public class HeaderFooterListAdapter implements WrapperListAdapter {
     private int headerSize = -1;
     private int footerSize = -1;
 
-    public static int TYPE_COUNT_WITHOUT_REFRESHABLE_LIST = 2;
-    public static int HEADER_TYPE = 0;
-    public static int FOOTER_TYPE = HEADER_TYPE + 1;
-    public static int REFRESHABLE_LIST_TYPE = FOOTER_TYPE + 1;
+    public static final int TYPE_COUNT_WITHOUT_REFRESHABLE_LIST = 2;
+    public static final int HEADER_TYPE = 0;
+    public static final int FOOTER_TYPE = HEADER_TYPE + 1;
+    public static final int REFRESHABLE_LIST_TYPE = FOOTER_TYPE + 1;
 
     public HeaderFooterListAdapter(View headerView, View footerView, ListAdapter adapter) {
         mAdapter = adapter;
@@ -174,8 +174,7 @@ public class HeaderFooterListAdapter implements WrapperListAdapter {
             int adjPosition = position - headerSize;
             int adapterCount = mAdapter.getCount();
             if (adjPosition < adapterCount) {
-//                return mAdapter.getItemViewType(adjPosition);
-                return REFRESHABLE_LIST_TYPE;
+            	return mAdapter.getItemViewType(adjPosition) + REFRESHABLE_LIST_TYPE;
             }
         }
 
