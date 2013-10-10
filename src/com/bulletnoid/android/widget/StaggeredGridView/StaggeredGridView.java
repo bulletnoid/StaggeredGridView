@@ -470,7 +470,8 @@ public class StaggeredGridView extends ViewGroup {
                 mActivePointerId = MotionEventCompat.getPointerId(ev, 0);
                 mTouchRemainderY = 0;
 
-                if (mTouchMode != TOUCH_MODE_FLINGING && !mDataChanged && motionPosition >= 0 && getAdapter().isEnabled(motionPosition)) {
+			if (mTouchMode != TOUCH_MODE_FLINGING && !mDataChanged && motionPosition >= 0
+					&& mAdapter != null && mAdapter.isEnabled(motionPosition)) {
                     mTouchMode = TOUCH_MODE_DOWN;
 
                     mBeginClick = true;
@@ -553,7 +554,7 @@ public class StaggeredGridView extends ViewGroup {
                     mTouchMode = TOUCH_MODE_IDLE;
                 }
 
-                if (!mDataChanged && mAdapter.isEnabled(motionPosition)) {
+                if (!mDataChanged && mAdapter != null && mAdapter.isEnabled(motionPosition)) {
                     // TODO : handle
                     mTouchMode = TOUCH_MODE_TAP;
                 } else {
@@ -589,7 +590,7 @@ public class StaggeredGridView extends ViewGroup {
                                             mPendingCheckForTap : mPendingCheckForLongPress);
                                 }
 
-                                if (!mDataChanged && mAdapter.isEnabled(motionPosition)) {
+                                if (!mDataChanged && mAdapter != null && mAdapter.isEnabled(motionPosition)) {
                                     mTouchMode = TOUCH_MODE_TAP;
 
                                     layoutChildren(mDataChanged);
@@ -622,7 +623,7 @@ public class StaggeredGridView extends ViewGroup {
                                     mTouchMode = TOUCH_MODE_REST;
                                 }
                                 return true;
-                            } else if (!mDataChanged && mAdapter.isEnabled(motionPosition)) {
+                            } else if (!mDataChanged && mAdapter != null && mAdapter.isEnabled(motionPosition)) {
                                 performClick.run();
                             }
                         }
@@ -1363,9 +1364,9 @@ public class StaggeredGridView extends ViewGroup {
         if (this.getChildCount() > column) {
             for (int i = 0; i < this.mColCount; i++) {
                 final View child = getChildAt(i);
-                final int left = child.getLeft();
 
                 if (child != null) {
+                    final int left = child.getLeft();
                     int col = 0;
 
                     // determine the column by cycling widths
