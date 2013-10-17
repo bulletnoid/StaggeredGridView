@@ -2227,9 +2227,12 @@ public class StaggeredGridView extends ViewGroup {
             super(in);
             firstId = in.readLong();
             position = in.readInt();
-            in.readIntArray(topOffsets);
-            in.readTypedList(mapping, ColMap.CREATOR);
 
+            int isPresent = in.readInt();
+            if (isPresent > 0) {
+                in.readIntArray(topOffsets);
+                in.readTypedList(mapping, ColMap.CREATOR);
+            }
         }
 
         @Override
@@ -2237,8 +2240,14 @@ public class StaggeredGridView extends ViewGroup {
             super.writeToParcel(out, flags);
             out.writeLong(firstId);
             out.writeInt(position);
-            out.writeIntArray(topOffsets);
-            out.writeTypedList(mapping);
+            if (topOffsets != null) {
+                out.writeInt(1);
+                out.writeIntArray(topOffsets);
+                out.writeTypedList(mapping);
+            }
+            else {
+                out.writeInt(0);
+            }
         }
 
         @Override
