@@ -2177,6 +2177,8 @@ public class StaggeredGridView extends ViewGroup {
         }
 
         private ColMap(Parcel in) {
+            int mapSize = in.readInt();
+            tempMap = new int[mapSize];
             in.readIntArray(tempMap);
             values = new ArrayList<Integer>();
             for (int index = 0; index < tempMap.length; index++) {
@@ -2187,6 +2189,7 @@ public class StaggeredGridView extends ViewGroup {
         @Override
         public void writeToParcel(Parcel out, int flags) {
             tempMap = toIntArray(values);
+            out.writeInt(tempMap.length);
             out.writeIntArray(tempMap);
         }
 
@@ -2230,7 +2233,10 @@ public class StaggeredGridView extends ViewGroup {
 
             int isPresent = in.readInt();
             if (isPresent > 0) {
+                int columnCount = in.readInt();
+                topOffsets = new int[columnCount];
                 in.readIntArray(topOffsets);
+                mapping = new ArrayList<ColMap>();
                 in.readTypedList(mapping, ColMap.CREATOR);
             }
         }
@@ -2242,6 +2248,7 @@ public class StaggeredGridView extends ViewGroup {
             out.writeInt(position);
             if (topOffsets != null) {
                 out.writeInt(1);
+                out.writeInt(topOffsets.length);
                 out.writeIntArray(topOffsets);
                 out.writeTypedList(mapping);
             }
