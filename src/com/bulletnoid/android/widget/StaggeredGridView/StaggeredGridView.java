@@ -1247,18 +1247,11 @@ public class StaggeredGridView extends ViewGroup {
                 }
             }
 
-//        	displayMapping();
-
             final View child = obtainView(position, null);
 
             if (child == null) continue;
 
             LayoutParams lp = (LayoutParams) child.getLayoutParams();
-
-            if (lp == null) {
-                lp = this.generateDefaultLayoutParams();
-                child.setLayoutParams(lp);
-            }
 
             if (child.getParent() != this) {
                 if (mInLayout) {
@@ -1425,10 +1418,6 @@ public class StaggeredGridView extends ViewGroup {
             if (child == null) continue;
 
             LayoutParams lp = (LayoutParams) child.getLayoutParams();
-            if (lp == null) {
-                lp = this.generateDefaultLayoutParams();
-                child.setLayoutParams(lp);
-            }
 
             if (child.getParent() != this) {
                 if (mInLayout) {
@@ -1742,6 +1731,7 @@ public class StaggeredGridView extends ViewGroup {
             } else if (!checkLayoutParams(lp)) {
                 lp = generateLayoutParams(lp);
             }
+            view.setLayoutParams(lp);
         }
 
         final LayoutParams sglp = (LayoutParams) lp;

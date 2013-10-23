@@ -174,7 +174,7 @@ public class HeaderFooterListAdapter implements WrapperListAdapter {
             int adjPosition = position - headerSize;
             int adapterCount = mAdapter.getCount();
             if (adjPosition < adapterCount) {
-                return mAdapter.getItemViewType(adjPosition) + FOOTER_TYPE;
+                return mAdapter.getItemViewType(adjPosition) + REFRESHABLE_LIST_TYPE;
 //                return REFRESHABLE_LIST_TYPE;
             }
         }
