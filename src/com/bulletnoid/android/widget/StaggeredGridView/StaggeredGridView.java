@@ -1074,7 +1074,7 @@ public class StaggeredGridView extends ViewGroup {
 
         Arrays.fill(mItemBottoms, Integer.MIN_VALUE);
 
-        final int childCount = getChildCount();
+        int childCount = getChildCount();
         int amountRemoved = 0;
 
         for (int i = 0; i < childCount; i++) {
@@ -1085,17 +1085,44 @@ public class StaggeredGridView extends ViewGroup {
             final boolean needsLayout = queryAdapter || child.isLayoutRequested();
 
             if (queryAdapter) {
-
                 View newView = obtainView(position, child);
                 if (newView == null) {
                     // child has been removed
                     removeViewAt(i);
-                    if (i - 1 >= 0) invalidateLayoutRecordsAfterPosition(i - 1);
+                    if (i - 1 >= 0) {
+                        invalidateLayoutRecordsAfterPosition(i - 1);
+                    }
                     amountRemoved++;
+                    childCount--;
                     continue;
                 } else if (newView != child) {
                     removeViewAt(i);
-                    addView(newView, i);
+                    int newViewIdx = indexOfChild(newView);
+                    // New view is not in current layout
+                    if (newViewIdx == -1) {
+                        addView(newView, i);
+                    }
+                    // New view moved position within layout
+                    else {
+                        if (newViewIdx < i) {
+                            throw new RuntimeException("Cannot recycle child in layout with lower index");
+                        }
+
+                        if (i - 1 >= 0) {
+                            invalidateLayoutRecordsAfterPosition(i - 1);
+                        }
+                        amountRemoved++;
+                        childCount--;
+
+                        if (newViewIdx > i) {
+                            removeViewAt(newViewIdx);
+                            addView(newView, i);
+                        }
+                        else {
+                            // New view already in the right place, do nothing
+                        }
+                    }
+
                     child = newView;
                 }
                 lp = (LayoutParams) child.getLayoutParams(); // Might have changed
@@ -1164,6 +1191,8 @@ public class StaggeredGridView extends ViewGroup {
             }
         }
 
+        // Max have changed
+        childCount = getChildCount();
         if (rebuildLayoutRecordsBefore >= 0 || rebuildLayoutRecordsAfter >= 0) {
             if (rebuildLayoutRecordsBefore >= 0) {
                 invalidateLayoutRecordsBeforePosition(rebuildLayoutRecordsBefore);
