@@ -661,6 +661,11 @@ public class StaggeredGridView extends ViewGroup {
         final int overScrolledBy;
         int movedBy;
 
+        // If grid is not initialized / populated, don't handle scrolling
+        if (mItemBottoms == null) {
+            return false;
+        }
+
         if (!contentFits) {
             final int overhang;
             final boolean up;
@@ -1783,6 +1788,7 @@ public class StaggeredGridView extends ViewGroup {
         clearAllState();
         mAdapter = new HeaderFooterListAdapter(mHeaderView, mFooterView, adapter);
         mDataChanged = true;
+        mItemCount = mAdapter.getCount();
 
         if (mAdapter != null) {
             mAdapter.registerDataSetObserver(mObserver);
