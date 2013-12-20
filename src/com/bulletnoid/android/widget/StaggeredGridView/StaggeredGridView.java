@@ -44,6 +44,7 @@ import com.bulletnoid.android.widget.StaggeredGridViewDemo.R;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 
 /**
  * ListView and GridView just not complex enough? Try StaggeredGridView!
@@ -87,6 +88,12 @@ public class StaggeredGridView extends ViewGroup {
      * of columns it spans changes, all bets for other items in the same direction are off
      * since the cached information no longer applies.
      */
+
+    public static class ScrollDirection {
+        public static final int NONE = 0;
+        public static final int UP = 1;
+        public static final int DOWN = 2;
+    }
 
     private HeaderFooterListAdapter mAdapter;
     private View mHeaderView = null;
@@ -229,6 +236,9 @@ public class StaggeredGridView extends ViewGroup {
 
     boolean mCanJumpToTop;
     JumpToTopListener mJumpToTopListener;
+    private int mScrollDirection;
+    private long mScrollDirectionChangeDate;
+    OnChangedScrollDirectionListener mChangedScrollDirectionListener;
 
     public static boolean loadlock = false;
     public static boolean lazyload = false;
@@ -309,6 +319,10 @@ public class StaggeredGridView extends ViewGroup {
         public void onJumpToTopStateChanged(boolean canJump);
     }
 
+    public interface OnChangedScrollDirectionListener {
+        public void onScrollDirectionChanged(int direction);
+    }
+
     private final SparseArrayCompat<LayoutRecord> mLayoutRecords =
             new SparseArrayCompat<LayoutRecord>();
 
@@ -355,6 +369,10 @@ public class StaggeredGridView extends ViewGroup {
 
     public void setJumpToTopListener(JumpToTopListener jumpToTopListener) {
         this.mJumpToTopListener = jumpToTopListener;
+    }
+
+    public void setOnChangedScrollDirectionListener(OnChangedScrollDirectionListener changedScrollDirectionListener) {
+        this.mChangedScrollDirectionListener = changedScrollDirectionListener;
     }
 
     /**
@@ -702,6 +720,16 @@ public class StaggeredGridView extends ViewGroup {
             if (mJumpToTopListener != null && canJump != mCanJumpToTop) {
                 mJumpToTopListener.onJumpToTopStateChanged(canJump);
                 mCanJumpToTop = canJump;
+            }
+
+            int scrollDirection = deltaY > 0 ? ScrollDirection.UP : ScrollDirection.DOWN;
+            if (Math.abs(deltaY) > 10 && mChangedScrollDirectionListener != null && scrollDirection != mScrollDirection) {
+                long time = new Date().getTime();
+                if (mScrollDirectionChangeDate < time - 1000) {
+                    mChangedScrollDirectionListener.onScrollDirectionChanged(scrollDirection);
+                    mScrollDirection = scrollDirection;
+                    mScrollDirectionChangeDate = time;
+                }
             }
 
             offsetChildren(up ? movedBy : -movedBy);
