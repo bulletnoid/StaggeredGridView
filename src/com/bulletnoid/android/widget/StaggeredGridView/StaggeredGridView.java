@@ -2155,6 +2155,10 @@ public class StaggeredGridView extends ViewGroup {
                         mItemBottoms[i] = mItemTops[i];
                     }
                 }
+                else {
+                    // Footer is not stable anyway
+                    removeView(mFooterView);
+                }
 
                 // reset list if position does not exist or id for position has changed
                 if (mFirstPosition > mItemCount - 1 || mAdapter.getItemId(mFirstPosition) != mFirstAdapterId) {
