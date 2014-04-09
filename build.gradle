@@ -9,9 +9,6 @@ buildscript {
 apply plugin: 'android-library'
 
 repositories {
-    maven {
-        url 'https://github.com/Goddchen/mvn-repo/raw/master/'
-    }
     maven { url 'http://repo1.maven.org/maven2' }
 }
 
