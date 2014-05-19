@@ -679,7 +679,7 @@ public class StaggeredGridView extends ViewGroup {
             final boolean up;
             mPopulating = true;
             if (deltaY > 0) {
-                overhang = fillUp(mFirstPosition - 1, allowOverhang) + mItemMargin;
+                overhang = fillUp(mFirstPosition - 1, allowOverhang) + getItemMargin(0);
                 up = true;
             } else {
                 overhang = fillDown(mFirstPosition + getChildCount(), allowOverhang) + mItemMargin;
@@ -845,7 +845,7 @@ public class StaggeredGridView extends ViewGroup {
             for (int i = 0; i < childCount; i++) {
                 final View child = getChildAt(i);
                 final LayoutParams lp = (LayoutParams) child.getLayoutParams();
-                final int top = child.getTop() - mItemMargin;
+                final int top = child.getTop() - getItemMargin(lp.position);
                 final int bottom = child.getBottom();
 
                 final int colEnd = Math.min(mColCount, lp.column + lp.span);
@@ -1069,6 +1069,11 @@ public class StaggeredGridView extends ViewGroup {
         }
     }
 
+    private int getColWidth(int position) {
+        int itemMargin = getItemMargin(position);
+        return (getWidth() - getPaddingLeft() - getPaddingRight() - itemMargin * 2 - itemMargin * (mColCount - 1)) / mColCount;
+    }
+
     /**
      * Measure and layout all currently visible children.
      *
@@ -1076,10 +1081,7 @@ public class StaggeredGridView extends ViewGroup {
      */
     final void layoutChildren(boolean queryAdapter) {
         final int paddingLeft = getPaddingLeft();
-        final int paddingRight = getPaddingRight();
-        final int itemMargin = mItemMargin;
-        final int colWidth = (getWidth() - paddingLeft - paddingRight - itemMargin * (mColCount - 1)) / mColCount;
-        mColWidth = colWidth;
+        mColWidth = getColWidth(1);
         int rebuildLayoutRecordsBefore = -1;
         int rebuildLayoutRecordsAfter = -1;
 
@@ -1140,6 +1142,8 @@ public class StaggeredGridView extends ViewGroup {
             }
 
             final int span = Math.min(mColCount, lp.span);
+            final int itemMargin = getItemMargin(lp.position);
+            final int colWidth = getColWidth(lp.position);
             final int widthSize = colWidth * span + itemMargin * (span - 1);
 
             if (needsLayout) {
@@ -1155,13 +1159,13 @@ public class StaggeredGridView extends ViewGroup {
                 child.measure(widthSpec, heightSpec);
             }
 
-            int childTop = mItemBottoms[col] > Integer.MIN_VALUE ? mItemBottoms[col] + mItemMargin : child.getTop();
+            int childTop = mItemBottoms[col] > Integer.MIN_VALUE ? mItemBottoms[col] + itemMargin : child.getTop();
 
             if (span > 1) {
                 int lowest = childTop;
 
                 for (int j = 0; j < mColCount; j++) {
-                    final int bottom = mItemBottoms[j] + mItemMargin;
+                    final int bottom = mItemBottoms[j] + itemMargin;
                     if (bottom > lowest) {
                         lowest = bottom;
                     }
@@ -1171,7 +1175,7 @@ public class StaggeredGridView extends ViewGroup {
 
             final int childHeight = child.getMeasuredHeight();
             final int childBottom = childTop + childHeight;
-            final int childLeft = paddingLeft + col * (colWidth + itemMargin);
+            final int childLeft = paddingLeft + itemMargin + col * (colWidth + itemMargin);
             final int childRight = childLeft + child.getMeasuredWidth();
             child.layout(childLeft, childTop, childRight, childBottom);
 
@@ -1254,6 +1258,14 @@ public class StaggeredGridView extends ViewGroup {
         mLayoutRecords.removeAtRange(beginAt + 1, mLayoutRecords.size() - beginAt);
     }
 
+    private int getItemMargin(int position) {
+        if (position == 0 && mHeaderView != null) {
+            return 0;
+        }
+
+        return mItemMargin;
+    }
+
     /**
      * Should be called with mPopulating set to true
      *
@@ -1263,11 +1275,7 @@ public class StaggeredGridView extends ViewGroup {
      */
     final int fillUp(int fromPosition, int overhang) {
         final int paddingLeft = getPaddingLeft();
-        final int paddingRight = getPaddingRight();
-        final int itemMargin = mItemMargin;
-        final int colWidth =
-                (getWidth() - paddingLeft - paddingRight - itemMargin * (mColCount - 1)) / mColCount;
-        mColWidth = colWidth;
+        mColWidth = getColWidth(fromPosition);
         final int gridTop = getPaddingTop();
         final int fillTo = gridTop - overhang;
         int nextCol = getNextColumnUp();
@@ -1299,6 +1307,8 @@ public class StaggeredGridView extends ViewGroup {
                 }
             }
 
+            final int itemMargin = getItemMargin(lp.position);
+            final int colWidth = getColWidth(lp.position);
             final int span = Math.min(mColCount, lp.span);
             final int widthSize = colWidth * span + itemMargin * (span - 1);
             final int widthSpec = MeasureSpec.makeMeasureSpec(widthSize, MeasureSpec.EXACTLY);
@@ -1362,7 +1372,7 @@ public class StaggeredGridView extends ViewGroup {
 
             int childBottom = startFrom;
             int childTop = childBottom - childHeight;
-            final int childLeft = paddingLeft + nextCol * (colWidth + itemMargin);
+            final int childLeft = paddingLeft + itemMargin + nextCol * (colWidth + itemMargin);
             final int childRight = childLeft + child.getMeasuredWidth();
 
             child.layout(childLeft, childTop, childRight, childBottom);
@@ -1416,18 +1426,15 @@ public class StaggeredGridView extends ViewGroup {
     final int fillDownTo(int position, int fillTo) {
         final int gridBottom = getHeight() - getPaddingBottom();
         final int paddingLeft = getPaddingLeft();
-        final int paddingRight = getPaddingRight();
-        final int itemMargin = mItemMargin;
-        final int colWidth = (getWidth() - paddingLeft - paddingRight - itemMargin * (mColCount - 1)) / mColCount;
         int nextCol = getNextColumnDown(position);
 
         while (nextCol >= 0 && mItemBottoms[nextCol] < fillTo && position < mItemCount) {
-
             final View child = obtainView(position, null);
 
             if (child == null) continue;
 
             LayoutParams lp = (LayoutParams) child.getLayoutParams();
+            final int colWidth = getColWidth(lp.position);
 
             if (child.getParent() != this) {
                 if (mInLayout) {
@@ -1438,7 +1445,7 @@ public class StaggeredGridView extends ViewGroup {
             }
 
             final int span = Math.min(mColCount, lp.span);
-            final int widthSize = colWidth * span + itemMargin * (span - 1);
+            final int widthSize = colWidth * span + getItemMargin(position) * (span - 1);
             final int widthSpec = MeasureSpec.makeMeasureSpec(widthSize, MeasureSpec.EXACTLY);
 
             LayoutRecord rec;
@@ -1499,13 +1506,14 @@ public class StaggeredGridView extends ViewGroup {
                 startFrom = mItemBottoms[nextCol];
             }
 
+            int itemMargin = getItemMargin(lp.position);
             final int childTop = startFrom + itemMargin;
             final int childBottom = childTop + childHeight;
             final int childLeft;
             if (span > 1) {
-                childLeft = paddingLeft;
+                childLeft = paddingLeft + itemMargin;
             } else {
-                childLeft = paddingLeft + nextCol * (colWidth + itemMargin);
+                childLeft = paddingLeft + itemMargin + nextCol * (colWidth + itemMargin);
             }
             final int childRight = childLeft + child.getMeasuredWidth();
             child.layout(childLeft, childTop, childRight, childBottom);
@@ -1868,7 +1876,7 @@ public class StaggeredGridView extends ViewGroup {
         }
 
         if (getChildCount() > 0) {
-
+            int itemMargin = getItemMargin(position);
             int topOffsets[] = new int[this.mColCount];
 
             if (this.mColWidth > 0)
@@ -1880,11 +1888,16 @@ public class StaggeredGridView extends ViewGroup {
                         Log.w("mColWidth", mColWidth + " " + left);
 
                         // determine the column by cycling widths
-                        while (left > col * (this.mColWidth + mItemMargin * 2) + getPaddingLeft()) {
+                        while (left > col * (this.mColWidth + itemMargin * 2) + getPaddingLeft()) {
                             col++;
                         }
 
-                        topOffsets[col] = getChildAt(i).getTop() - mItemMargin - getPaddingTop();
+                        try {
+                            topOffsets[col] = getChildAt(i).getTop() - itemMargin - getPaddingTop();
+                        }
+                        catch (IndexOutOfBoundsException e) {
+                            // Ignore
+                        }
                     }
 
                 }
@@ -2111,7 +2124,7 @@ public class StaggeredGridView extends ViewGroup {
                         for (int i = 0; i < childCount; i++) {
                             final View child = getChildAt(i);
                             final LayoutParams lp = (LayoutParams) child.getLayoutParams();
-                            final int top = child.getTop() - mItemMargin;
+                            final int top = child.getTop() - getItemMargin(lp.position);
                             final int bottom = child.getBottom();
 
                             final int colEnd = Math.min(mColCount, lp.column + lp.span);
