@@ -232,12 +232,44 @@ public class StaggeredGridView extends ViewGroup {
      */
     private Rect mTouchFrame;
 
+    /**
+     * Listener if grid view should load more
+     */
     OnLoadmoreListener mLoadListener;
 
+    /**
+     *
+     */
     boolean mCanJumpToTop;
+
+    /**
+     *
+     */
     JumpToTopListener mJumpToTopListener;
+
+    /**
+     * Current vertical scroll position
+     */
+    private int mScrollY = 0;
+
+    /**
+     * Vertical bottom scroll position reached
+     */
+    private boolean mScrollBottom;
+
+    /**
+     * Current scroll direction
+     */
     private int mScrollDirection;
+
+    /**
+     * Timestamp for checking scroll direction
+     */
     private long mScrollDirectionChangeDate;
+
+    /**
+     * Listener if scroll direction changed
+     */
     OnChangedScrollDirectionListener mChangedScrollDirectionListener;
 
     public static boolean loadlock = false;
@@ -728,8 +760,18 @@ public class StaggeredGridView extends ViewGroup {
             }
 
             mPopulating = false;
-            overScrolledBy = allowOverhang - overhang;
+            mScrollBottom = false;
+            if (up) {
+                mScrollY -= movedBy;
+            }
+            else {
+                mScrollY += movedBy;
+                if (movedBy == 0) {
+                    mScrollBottom = true;
+                }
+            }
 
+            overScrolledBy = allowOverhang - overhang;
         } else {
             overScrolledBy = allowOverhang;
             movedBy = 0;
@@ -1822,6 +1864,7 @@ public class StaggeredGridView extends ViewGroup {
         // Reset mItemTops and mItemBottoms
         mItemTops = null;
         mItemBottoms = null;
+        mScrollY = 0;
 
         // Reset the first visible position in the grid to be item 0
         mFirstPosition = 0;
@@ -2810,4 +2853,11 @@ public class StaggeredGridView extends ViewGroup {
         mFooterView.setLayoutParams(lp);
     }
 
+    @Override
+    public boolean canScrollVertically(int direction) {
+        if (direction == -1) {
+            return mScrollY > 0;
+        }
+        return !mScrollBottom;
+    }
 }
