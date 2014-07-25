@@ -28,6 +28,7 @@ import android.os.Build;
 import android.os.Handler;
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.renderscript.RSInvalidStateException;
 import android.support.v4.util.SparseArrayCompat;
 import android.support.v4.view.MotionEventCompat;
 import android.support.v4.view.VelocityTrackerCompat;
@@ -1028,7 +1029,13 @@ public class StaggeredGridView extends ViewGroup {
     @Override
     protected void onLayout(boolean changed, int l, int t, int r, int b) {
         mInLayout = true;
-        populate(false);
+        try {
+            populate(false);
+        }
+        // Happens if tile layout (spans) changed, e.g. by deleting tiles
+        catch (IllegalStateException e) {
+            fillToFirstPosition();
+        }
         mInLayout = false;
 
         final int width = r - l;
