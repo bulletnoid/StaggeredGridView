@@ -15,7 +15,7 @@ repositories {
 dependencies {
     compile (
             'com.android.support:support-v4:13.0.0',
-            files('libs/picasso-2.0.0.jar')
+            'com.squareup.picasso:picasso:2.3.4',
     )
 }
 
