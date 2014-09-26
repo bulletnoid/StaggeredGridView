@@ -2847,17 +2847,21 @@ public class StaggeredGridView extends ViewGroup {
     public void setHeaderView(View v) {
         mHeaderView = v;
 
-        StaggeredGridView.LayoutParams lp = new StaggeredGridView.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT);
-        lp.span = Integer.MAX_VALUE;
-        mHeaderView.setLayoutParams(lp);
+        if (mHeaderView != null) {
+            StaggeredGridView.LayoutParams lp = new StaggeredGridView.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT);
+            lp.span = Integer.MAX_VALUE;
+            mHeaderView.setLayoutParams(lp);
+        }
     }
 
     public void setFooterView(View v) {
         mFooterView = v;
 
-        StaggeredGridView.LayoutParams lp = new StaggeredGridView.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT);
-        lp.span = Integer.MAX_VALUE;
-        mFooterView.setLayoutParams(lp);
+        if (mFooterView != null) {
+            StaggeredGridView.LayoutParams lp = new StaggeredGridView.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT);
+            lp.span = Integer.MAX_VALUE;
+            mFooterView.setLayoutParams(lp);
+        }
     }
 
     @Override
