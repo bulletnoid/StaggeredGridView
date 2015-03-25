@@ -28,7 +28,6 @@ import android.os.Build;
 import android.os.Handler;
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.renderscript.RSInvalidStateException;
 import android.support.v4.util.SparseArrayCompat;
 import android.support.v4.view.MotionEventCompat;
 import android.support.v4.view.VelocityTrackerCompat;
@@ -239,16 +238,6 @@ public class StaggeredGridView extends ViewGroup {
     OnLoadmoreListener mLoadListener;
 
     /**
-     *
-     */
-    boolean mCanJumpToTop;
-
-    /**
-     *
-     */
-    JumpToTopListener mJumpToTopListener;
-
-    /**
      * Current vertical scroll position
      */
     private int mScrollY = 0;
@@ -258,20 +247,7 @@ public class StaggeredGridView extends ViewGroup {
      */
     private boolean mScrollBottom;
 
-    /**
-     * Current scroll direction
-     */
-    private int mScrollDirection;
-
-    /**
-     * Timestamp for checking scroll direction
-     */
-    private long mScrollDirectionChangeDate;
-
-    /**
-     * Listener if scroll direction changed
-     */
-    OnChangedScrollDirectionListener mChangedScrollDirectionListener;
+    OnScrollListener mOnScrollListener;
 
     public static boolean loadlock = false;
     public static boolean lazyload = false;
@@ -348,12 +324,8 @@ public class StaggeredGridView extends ViewGroup {
         public void onLoadmore();
     }
 
-    public interface JumpToTopListener {
-        public void onJumpToTopStateChanged(boolean canJump);
-    }
-
-    public interface OnChangedScrollDirectionListener {
-        public void onScrollDirectionChanged(int direction);
+    public interface OnScrollListener {
+        public void onScroll(int direction, int delta, int firstPosition);
     }
 
     private final SparseArrayCompat<LayoutRecord> mLayoutRecords =
@@ -400,12 +372,8 @@ public class StaggeredGridView extends ViewGroup {
         this.mLoadListener = listener;
     }
 
-    public void setJumpToTopListener(JumpToTopListener jumpToTopListener) {
-        this.mJumpToTopListener = jumpToTopListener;
-    }
-
-    public void setOnChangedScrollDirectionListener(OnChangedScrollDirectionListener changedScrollDirectionListener) {
-        this.mChangedScrollDirectionListener = changedScrollDirectionListener;
+    public void setOnScrollListener(OnScrollListener onScrollListener) {
+        this.mOnScrollListener = onScrollListener;
     }
 
     /**
@@ -739,20 +707,9 @@ public class StaggeredGridView extends ViewGroup {
                 loadlock = true;
             }
 
-            boolean canJump = deltaY > 0 && (mFirstPosition / Math.max(1, mColCount)) > 2;
-            if (mJumpToTopListener != null && canJump != mCanJumpToTop) {
-                mJumpToTopListener.onJumpToTopStateChanged(canJump);
-                mCanJumpToTop = canJump;
-            }
-
             int scrollDirection = deltaY > 0 ? ScrollDirection.UP : ScrollDirection.DOWN;
-            if (Math.abs(deltaY) > 10 && mChangedScrollDirectionListener != null && scrollDirection != mScrollDirection) {
-                long time = new Date().getTime();
-                if (mScrollDirectionChangeDate < time - 1000) {
-                    mChangedScrollDirectionListener.onScrollDirectionChanged(scrollDirection);
-                    mScrollDirection = scrollDirection;
-                    mScrollDirectionChangeDate = time;
-                }
+            if (mOnScrollListener != null) {
+                mOnScrollListener.onScroll(scrollDirection, deltaY, mFirstPosition);
             }
 
             offsetChildren(up ? movedBy : -movedBy);
