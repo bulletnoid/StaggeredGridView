@@ -116,7 +116,7 @@ public class StaggeredGridView extends ViewGroup {
 
     private final RecycleBin mRecycler = new RecycleBin();
 
-    private final AdapterDataSetObserver mObserver = new AdapterDataSetObserver();
+    private AdapterDataSetObserver mObserver;
 
     private boolean mDataChanged;
     private int mItemCount;
@@ -1791,7 +1791,7 @@ public class StaggeredGridView extends ViewGroup {
     }
 
     public void setAdapter(ListAdapter adapter) {
-        if (mAdapter != null) {
+        if (mAdapter != null && mObserver != null) {
             mAdapter.unregisterDataSetObserver(mObserver);
         }
         // TODO: If the new adapter says that there are stable IDs, remove certain layout records
@@ -1801,13 +1801,11 @@ public class StaggeredGridView extends ViewGroup {
         mDataChanged = true;
         mItemCount = mAdapter.getCount();
 
-        if (mAdapter != null) {
+        if (mObserver != null) {
             mAdapter.registerDataSetObserver(mObserver);
-            mRecycler.setViewTypeCount(mAdapter.getViewTypeCount());
-            mHasStableIds = mAdapter.hasStableIds();
-        } else {
-            mHasStableIds = false;
         }
+        mRecycler.setViewTypeCount(mAdapter.getViewTypeCount());
+        mHasStableIds = mAdapter.hasStableIds();
         populate(mAdapter != null);
     }
 
@@ -2836,4 +2834,25 @@ public class StaggeredGridView extends ViewGroup {
         }
         return !mScrollBottom;
     }
+
+    @Override
+    protected void onDetachedFromWindow() {
+        super.onDetachedFromWindow();
+
+        if (mAdapter != null && mObserver != null) {
+            mAdapter.unregisterDataSetObserver(mObserver);
+            mObserver = null;
+        }
+    }
+
+    @Override
+    protected void onAttachedToWindow() {
+        super.onAttachedToWindow();
+
+        if (mAdapter != null && mObserver == null) {
+            mObserver = new AdapterDataSetObserver();
+            mAdapter.registerDataSetObserver(mObserver);
+        }
+    }
+
 }
