@@ -14,14 +14,5 @@
             android:layout_marginTop="16dp"
             android:layout_gravity="center"/>
 
-    <Button
-            android:id="@+id/btn_stgv_ptr"
-            android:layout_width="match_parent"
-            android:layout_height="80dp"
-            android:text="StaggeredGridView with PullToRefresh"
-            android:layout_marginLeft="16dp"
-            android:layout_marginRight="16dp"
-            android:layout_marginTop="16dp"
-            android:layout_gravity="center"/>
 </LinearLayout>
 

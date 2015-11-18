@@ -15,7 +15,6 @@ public class MainActivity extends Activity {
         setContentView(R.layout.ac_main);
 
         btn_stgv = (Button) findViewById(R.id.btn_stgv);
-        btn_stgv_ptr = (Button) findViewById(R.id.btn_stgv_ptr);
 
         btn_stgv.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -25,12 +24,5 @@ public class MainActivity extends Activity {
             }
         });
 
-        btn_stgv_ptr.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent i = new Intent(MainActivity.this, STGVWithPTRActivity.class);
-                startActivity(i);
-            }
-        });
     }
 }

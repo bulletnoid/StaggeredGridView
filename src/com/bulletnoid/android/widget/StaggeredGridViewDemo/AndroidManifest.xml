@@ -28,9 +28,5 @@
                 android:name=".STGVActivity"
                 android:label="STGVActivity"
                 android:screenOrientation="portrait"/>
-        <activity
-                android:name=".STGVWithPTRActivity"
-                android:label="STGVWithPTRActivity"
-                android:screenOrientation="portrait"/>
     </application>
 </manifest>
