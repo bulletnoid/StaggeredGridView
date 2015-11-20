@@ -250,7 +250,6 @@ public class StaggeredGridView extends ViewGroup {
 
     OnScrollListener mOnScrollListener;
 
-    public static boolean loadlock = false;
     public static boolean lazyload = false;
     public static final int MAX_CHILD_COUNT = 12;
 
@@ -707,9 +706,8 @@ public class StaggeredGridView extends ViewGroup {
                 mGetToTop = false;
             }
 
-            if (mLoadListener != null && !loadlock && deltaY < 0 && (mFirstPosition + getChildCount()) > (mAdapter.getCount() * 0.75)) {
+            if (mLoadListener != null && deltaY < 0 && (mFirstPosition + getChildCount()) > (mAdapter.getCount() * 0.75)) {
                 mLoadListener.onLoadmore();
-                loadlock = true;
             }
 
             int scrollDirection = deltaY > 0 ? ScrollDirection.UP : ScrollDirection.DOWN;
@@ -2161,8 +2159,6 @@ public class StaggeredGridView extends ViewGroup {
                             }
                         }
                     }
-
-                    loadlock = false;
                 }
             } else {
                 mDataChanged = true;
@@ -2197,8 +2193,6 @@ public class StaggeredGridView extends ViewGroup {
                     if (mRestoreOffsets != null)
                         Arrays.fill(mRestoreOffsets, 0);
                 }
-
-                loadlock = false;
             }
 
             // TODO: consider repopulating in a deferred runnable instead
