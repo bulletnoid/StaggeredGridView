@@ -2843,8 +2843,11 @@ public class StaggeredGridView extends ViewGroup {
     protected void onAttachedToWindow() {
         super.onAttachedToWindow();
 
-        if (mAdapter != null && mObserver == null) {
+        if (mObserver == null) {
             mObserver = new AdapterDataSetObserver();
+        }
+
+        if (mAdapter != null) {
             mAdapter.registerDataSetObserver(mObserver);
         }
     }
